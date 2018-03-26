@@ -17,3 +17,25 @@
 .pagination {
     margin: 0px;
 }
+
+.banner>img {
+    object-fit: contain;
+}
+
+.product.product-single .product-thumb>img {
+    height: 250px;
+    object-fit: contain;
+}
+
+#avatar {
+    width: 30%;
+    float: left;
+}
+
+#avatar img {
+    max-width: 300px;
+    max-height: 300px;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+}

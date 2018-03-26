@@ -5,12 +5,15 @@ namespace App\Http\Controllers\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Http\Requests\ReviewRequest;
+use App\Http\Requests\UserRequest;
 use App\Http\Controllers\Controller;
 use App\Models\PromotionDetail;
 use App\Models\Image;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Review;
+use App\Models\User;
+use App\Models\Order;
 use Session;
 use Auth;
 use Cart;
@@ -155,6 +158,7 @@ class HomeController extends Controller
         $search = $request->input('search');
         if ($request->type) {
             switch ($request->type) {
+                case config('custom.defaultZero'):
                 case config('custom.defaultOne'):
                     $products = Product::search($search, 'price', 'asc');
                     break;
@@ -167,13 +171,14 @@ class HomeController extends Controller
             $products = Product::search($search, 'price', 'asc');
         }
 
-        return view('user.layouts.search',compact('products'));
+        return view('user.layouts.search', compact('products', 'search'));
     }
 
     public function getCategory(Request $request, $type)
     {
         if ($request->ajax()) {
             switch ($request->type) {
+                case config('custom.defaultZero'):
                 case config('custom.defaultOne'):
                     $product_in_cates = Product::orderCategory($type, 'price', 'asc');
                     break;
@@ -186,7 +191,7 @@ class HomeController extends Controller
             $product_in_cates = Product::orderCategory($type, 'price', 'asc');
         }
 
-        return view('user.layouts.products',compact('product_in_cates'));
+        return view('user.layouts.products', compact('product_in_cates'));
     }
 
     public function getLatestProduct(Request $request)
@@ -196,7 +201,7 @@ class HomeController extends Controller
                 case config('custom.defaultOne'):
                     $latest_products_all = Product::orderPaginate('price', 'asc');
                     break;
-                
+                case config('custom.defaultZero'):
                 case config('custom.defaultTwo'):
                     $latest_products_all = Product::orderPaginate('price', 'desc');
                     break;
@@ -206,7 +211,7 @@ class HomeController extends Controller
             $latest_products_all = Product::orderPaginate('id', 'desc');
         }
 
-        return view('user.layouts.latestproducts',compact('latest_products_all'));
+        return view('user.layouts.latestproducts', compact('latest_products_all'));
     }
 
     public function getPromotionProduct(Request $request)
@@ -216,7 +221,7 @@ class HomeController extends Controller
                 case config('custom.defaultOne'):
                     $promotion_products_all = PromotionDetail::orderPaginate('percent', 'asc');
                     break;
-                
+                case config('custom.defaultZero'):
                 case config('custom.defaultTwo'):
                     $promotion_products_all = PromotionDetail::orderPaginate('percent', 'desc');
                     break;
@@ -226,6 +231,41 @@ class HomeController extends Controller
             $promotion_products_all = PromotionDetail::orderPaginate('percent', 'desc');
         }
         
-        return view('user.layouts.promotionproducts',compact('promotion_products_all'));
+        return view('user.layouts.promotionproducts', compact('promotion_products_all'));
+    }
+
+    public function getInformation($id)
+    {
+        
+        $user = User::find($id);
+        $orders = Order::withOrderDetail($user->email)->get();
+
+        return view('user.layouts.info',compact('user', 'orders'));
+    }
+
+    public function getUserUpdate(UserRequest $request, $id)
+    {
+        User::find($id)->update([
+            'name' => $request->name,
+            'address' => $request->address,
+            'phone' => $request->phone,
+        ]);
+
+        if ($request->password != null) {
+            User::find($id)->update([
+                'password' => bcrypt($request->password),
+            ]);
+        }
+
+        if ($request->avatar != null) {
+            $filename = $request->avatar->move(config('custom.image.path_avatar'), $request->avatar->getClientOriginalName());
+            $image = Image::imageFirst($id, config('custom.image.user'))->update([
+                'image' => $filename,
+                'imageable_id' => $id,
+                'imageable_type' => config('custom.image.user'),
+            ]);
+        }
+
+        return redirect()->back();
     }
 }

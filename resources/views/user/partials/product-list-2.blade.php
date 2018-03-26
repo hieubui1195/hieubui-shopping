@@ -60,16 +60,30 @@
                 </div>
                 <h2 class="product-name">{{ Html::linkRoute('product', $pp->product->name, $pp->product->id) }}</h2>
                 <div class="product-btns">
-                    {!! html_entity_decode(
-                        Form::button(
-                            '<i class="fa fa-shopping-cart"></i>' . Lang::get('custom.common.addcart'),
-                            [
-                                'class' => 'primary-btn add-to-cart',
-                                'data-id' => $pp->product->id,
-                                'data-price' => ($pp->percent != 0 ) ? ceil($pp->product->price * (100 - $pp->percent) / 100) : $pp->product->price,
-                            ]
-                        )
-                    ) !!}
+                    
+                    @if ($pp->product->amount > 0)
+                        {!! html_entity_decode(
+                            Form::button(
+                                '<i class="fa fa-shopping-cart"></i>' . Lang::get('custom.common.addcart'),
+                                [
+                                    'class' => 'primary-btn add-to-cart',
+                                    'data-id' => $pp->product->id,
+                                    'data-price' => ($pp->percent != 0 ) ? ceil($pp->product->price * (100 - $pp->percent) / 100) : $pp->product->price,
+                                    'style' => 'width: 100%;',
+                                ]
+                            )
+                        ) !!}
+                    @else
+                        {!! html_entity_decode(
+                            Form::button(
+                                Lang::get('custom.common.sold_out'),
+                                [
+                                    'class' => 'primary-btn',
+                                    'style' => 'background: red; width: 100%;',
+                                ]
+                            )
+                        ) !!}
+                    @endif
                 </div>
             </div>
         </div>

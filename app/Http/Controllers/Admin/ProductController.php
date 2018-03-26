@@ -96,7 +96,7 @@ class ProductController extends Controller
             foreach ($votes as $vote) {
                 $totalVote += $vote;
             }
-            $avgVote = round($totalVote / count($votes));
+            $avgVote = floor($totalVote / count($votes));
         }
 
         return view('admin.products.show', compact('product', 'arrImg', 'promotion', 'reviews', 'countVote', 'avgVote'));
@@ -158,7 +158,7 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        Promotion::destroy($id);
+        Product::destroy($id);
 
         return redirect()->back()->with('msg', Lang::get('custom.msg.product_deleted'));
     }

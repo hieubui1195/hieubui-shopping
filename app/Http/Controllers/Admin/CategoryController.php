@@ -120,9 +120,11 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         $subIds = Category::subIds($id);
+        if(count($subIds) > 0) {
+            Category::destroy($subIds);
+        }
         Category::destroy($id);
-        Category::destroy($subIds);
-        
+
         return redirect()->back()->with('msg', Lang::get('custom.msg.category_deleted'));
     }
 

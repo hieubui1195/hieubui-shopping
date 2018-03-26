@@ -2,11 +2,7 @@
 
 @section('style')
     <!-- Google font -->
-    {{ Html::style('https://fonts.googleapis.com/css?family=Hind:400,700') }}
-
-    <!-- Bootstrap -->
-    {{ Html::style('assets/css/bootstrap.min.css') }}
-    
+    {{ Html::style('https://fonts.googleapis.com/css?family=Hind:400,700') }}    
     <!-- Slick -->
     {{ Html::style('assets/css/slick.css') }}
     {{ Html::style('assets/css/slick-theme.css') }}
@@ -90,9 +86,9 @@
                                     {{ $product->name }}
                                 </h2>
                                 <h3 class="product-price">
-                                    {{ ($promotion) ? ceil($product->price * (100 - $promotion->percent) / 100) : $product->price}} @lang('custom.common.currency') 
+                                    {{ ($promotion) ? number_format(ceil($product->price * (100 - $promotion->percent)) / 100, 0, '', '.') : number_format($product->price, 0, '', '.') }} @lang('custom.common.currency') 
                                     @if ($promotion)
-                                        <del class="product-old-price">{{ $product->price }} @lang('custom.common.currency')</del>
+                                        <del class="product-old-price">{{ number_format($product->price, 0, '', '.') }} @lang('custom.common.currency')</del>
                                     @endif
                                 </h3>
                                 <div>
@@ -143,9 +139,6 @@
 @endsection
 
 @section('script')
-    <!-- jQuery Plugins -->
-    {!! Html::script('assets/js/jquery.min.js') !!}
-    {!! Html::script('assets/js/bootstrap.min.js') !!}
     {!! Html::script('assets/js/slick.min.js') !!}
     {!! Html::script('assets/js/nouislider.min.js') !!}
     {!! Html::script('assets/js/jquery.zoom.min.js') !!}

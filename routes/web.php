@@ -61,6 +61,8 @@ Route::group(['middleware' => 'locale'], function() {
             'as' => 'checkout',
         ]);
         Route::post('/checkout', 'CartController@checkout');
+        Route::post('/extract-pdf', 'CartController@extractPdf')->name('extract-pdf');
+        Route::get('/pdfview',array('as'=>'pdfview','uses'=>'CartController@pdfview'));
 
         Route::post('/check-qty', 'HomeController@checkQty');
 
@@ -70,7 +72,7 @@ Route::group(['middleware' => 'locale'], function() {
             'uses' => 'HomeController@getReview',
             'as' => 'get-review',
         ]);
-        Route::put('/edit-review', [
+        Route::post('/edit-review', [
             'uses' => 'HomeController@editReview',
             'as' => 'edit-review',
         ]);
@@ -80,6 +82,17 @@ Route::group(['middleware' => 'locale'], function() {
         ]);
 
         Route::post('/load-data','HomeController@loadReviewAjax');
+
+        Route::get('/information/{id}', [
+            'as' => 'information',
+            'uses' => 'HomeController@getInformation'
+        ]);
+
+        Route::put('/user-update/{id}', [
+            'as' => 'userupdate',
+            'uses' => 'HomeController@getUserUpdate'
+        ]);
+
     });
 
     Route::group(['prefix'=>'admin', 'as'=>'admin.', 'namespace' => 'Admin'], function() {

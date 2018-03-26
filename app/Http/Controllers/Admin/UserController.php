@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use App\Models\Image;
+use App\Models\Review;
 use Lang;
 
 class UserController extends Controller
@@ -131,6 +132,7 @@ class UserController extends Controller
      */
     public function destroy(Request $request)
     {
+        Review::reviewUser($request->userId)->delete();
         User::destroy($request->userId);
 
         return response()->json(['msg' => Lang::get('custom.msg.user_deleted')]);

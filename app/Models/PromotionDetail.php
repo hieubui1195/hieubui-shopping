@@ -48,4 +48,9 @@ class PromotionDetail extends Model
         return $query->orderBy('percent', 'desc')
                         ->take(config('custom.defaultEight'));
     }
+
+    public function scopePromDetailProd($query, $promotionId)
+    {
+        return $query->where('promotion_id', $promotionId)->with('product');
+    }
 }

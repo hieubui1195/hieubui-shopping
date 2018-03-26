@@ -299,12 +299,14 @@
 
                             <div class="form-group row">
                                 <div class="col-sm-offset-3 col-sm-9">
-                                    {!! Form::submit(
-                                        Lang::get('custom.common.edit'),
-                                        [
-                                            'class' => 'btn btn-primary '  . (Auth::user()->id != $user[0]['id'] ? 'disabled' : ''),
-                                        ]
-                                    ) !!}
+                                    @if (Auth::user()->id == $user[0]['id'])
+                                        {!! Form::submit(
+                                            Lang::get('custom.common.edit'),
+                                            [
+                                                'class' => 'btn btn-primary',
+                                            ]
+                                        ) !!}
+                                    @endif
 
                                     {!! Html::linkRoute(
                                         'admin.user.index',

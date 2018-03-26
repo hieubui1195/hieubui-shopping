@@ -16,11 +16,6 @@ $(function () {
         }).then((result) => {
             if (result.value) {
                 var productId = $(this).attr('data-id');
-                swal(
-                    'Deleted!',
-                    'The item has been deleted.',
-                    'success'
-                )
                 $("#delete-form-" + productId).submit();
             }
         })

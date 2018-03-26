@@ -70,4 +70,9 @@ class Review extends Model
     {
         return $query->find($id);
     }
+
+    public function scopeReviewUser($query, $userId)
+    {
+        return $query->where('user_id', $userId);
+    }
 }

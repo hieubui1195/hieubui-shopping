@@ -65,14 +65,20 @@
                                     <p class="label bg-red">
                                         @lang('custom.common.deleted')
                                     </p>
-                                @elseif (\Carbon\Carbon::parse($promotion->end_date)->isPast())
-                                    <p class="label bg-yellow">
-                                        @lang('custom.common.finished')
-                                    </p>
                                 @else
-                                    <p class="label bg-green">
-                                        @lang('custom.common.active')
-                                    </p>
+                                    @if (\Carbon\Carbon::parse($promotion->end_date)->isPast())
+                                        <p class="label bg-yellow">
+                                            @lang('custom.common.finished')
+                                        </p>
+                                    @elseif (\Carbon\Carbon::parse($promotion->start_date)->isFuture())
+                                        <p class="label bg-blue">
+                                            @lang('custom.common.comming')
+                                        </p>
+                                    @else
+                                        <p class="label bg-green">
+                                            @lang('custom.common.active')
+                                        </p>
+                                    @endif
                                 @endif
                             </dd>
                         </dl>

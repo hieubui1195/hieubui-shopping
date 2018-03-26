@@ -118,7 +118,7 @@
                                             ?>
                                         @endforeach
 
-                                        {{ number_format($totalOrder) }} @lang('custom.common.currency') 
+                                        {{ number_format($totalOrder, 0, '', '.') }} @lang('custom.common.currency') 
                                     </td>
                                     <td>
                                         {{ \Carbon\Carbon::parse($order->purchase_date)->format('d F\, Y') }}
@@ -215,7 +215,7 @@
                                             {{ $item['product']['name'] }}
                                         </td>
                                         <td>
-                                            {{ number_format($item['product']['price']) }} @lang('custom.common.currency')
+                                            {{ number_format($item['product']['price'], 0, '', '.') }} @lang('custom.common.currency')
                                         </td>
                                         <td>
                                             {{ $item->amount }}
@@ -224,7 +224,7 @@
                                             {{ $promotions[$loop->index] }}
                                         </td>
                                         <td>
-                                            {{ number_format(ceil(($item['product']['price'] * $item->amount) * (100 - $promotions[$loop->index]) / 100)) }} @lang('custom.common.currency')
+                                            {{ number_format(ceil(($item['product']['price'] * $item->amount) * (100 - $promotions[$loop->index]) / 100), 0, '', '.') }} @lang('custom.common.currency')
                                         </td>
                                     </tr>
                                 @endforeach

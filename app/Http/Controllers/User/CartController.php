@@ -11,8 +11,10 @@ use Carbon\Carbon;
 use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use Illuminate\Support\Facades\App;
 use Lang;
 use Cart;
+use PDF;
 
 class CartController extends Controller
 {
@@ -92,10 +94,19 @@ class CartController extends Controller
                 'amount' => $item->qty,
             ]);
         }
+        $order = Order::find($orderId);
 
-        return response()->json([
-            'status' => config('custom.defaultOne'),
-            'msg' => Lang::get('custom.msg.order_success'),
-        ]);
+        return view('user.partials.noty-order', compact('cart', 'order'));
+    }
+
+    public function pdfview(Request $request)
+    {
+        $cart = Cart::content();
+        if($request->has('download')){
+            $pdf = PDF::loadView('user.partials.noty-order', compact('cart'));
+            return $pdf->download('order.pdf');
+        }
+
+        return view('user.partials.noty-order');
     }
 }

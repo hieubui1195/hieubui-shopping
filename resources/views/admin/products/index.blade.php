@@ -31,7 +31,7 @@
 
         <!-- Main content -->
         <section class="content">
-
+            {!! Form::hidden('confirm', Lang::get('custom.form.confirm_delete')) !!}
             <!-- Default box -->
             <div class="box">
                 <div class="box-header with-border">
@@ -92,13 +92,15 @@
                                         {{ $loop->index + 1 }}
                                     </td>
                                     <td>
-                                        {!! Html::image(
-                                            $products[$loop->index]['images'][0]['image'],
-                                            'Product Image',
-                                            [
-                                                'class' => 'img img-thumbnail product-image',
-                                            ]
-                                        ) !!}
+                                        {{-- @if ($products[$loop->index]['images'] != null)
+                                            {!! Html::image(
+                                                $products[$loop->index]['images'][0]['image'],
+                                                'Product Image',
+                                                [
+                                                    'class' => 'img img-thumbnail product-image',
+                                                ]
+                                            ) !!}
+                                        @endif --}}
                                         
                                     </td>
                                     <td>
@@ -125,11 +127,11 @@
                                         {{ $product->amount }}
                                     </td>
                                     <td>
-                                        {{ number_format($product->price) }}
+                                        {{ number_format($product->price, 0, '', '.') }}
                                     </td>
                                     <td>
                                         @if ($product->amount == 0)
-                                            <p class="label bg-warning">
+                                            <p class="label bg-yellow">
                                                 @lang('custom.common.sold_out')
                                             </p>
                                         @else

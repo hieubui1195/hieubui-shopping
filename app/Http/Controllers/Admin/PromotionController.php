@@ -33,7 +33,7 @@ class PromotionController extends Controller
      */
     public function create()
     {
-        $products = Product::productNameId();
+        $products = $this->getProdNotProm();
 
         return view('admin.promotions.create', compact('products'));
     }
@@ -46,10 +46,8 @@ class PromotionController extends Controller
      */
     public function store(PromotionRequest $request)
     {
-        $subStart = substr((string) $request->promotionRage, 0, 19);
-        $subEnd = substr((string) $request->promotionRage, 21, 30);
-        $start = date('Y-m-d H:i:s', strtotime($subStart));
-        $end = date('Y-m-d H:i:s', strtotime($subEnd));
+        $start = $this->createDate($request->promotionRage, 0, 19); 
+        $end = $this->createDate($request->promotionRage, 21, 30);
 
         Promotion::create([
             'name' => $request->name,
@@ -107,9 +105,12 @@ class PromotionController extends Controller
     {
         try {
             $promotion = Promotion::findOrFail($id);
-            $products = Product::productNameId();
+            $products = $this->getProdEdit($id);
             $promotionDetails = Promotion::detailProduct($id)->pluck('product_id');
-            $percent = Promotion::detailProduct($id)->pluck('percent');
+            $percent = config('custom.defaultZero');
+            if (Promotion::detailProduct($id)->count() > 0) {
+                $percent = Promotion::detailProduct($id)[0]['percent'];
+            }
             $image = Promotion::promotionImage($id);
 
             return view('admin.promotions.edit', compact('promotion', 'products', 'promotionDetails', 'percent', 'image'));
@@ -127,11 +128,8 @@ class PromotionController extends Controller
      */
     public function update(PromotionRequest $request, $id)
     {
-        
-        $subStart = substr((string) $request->promotionRage, 0, 19);
-        $subEnd = substr((string) $request->promotionRage, 21, 30);
-        $start = date('Y-m-d H:i:s', strtotime($subStart)); 
-        $end = date('Y-m-d H:i:s', strtotime($subEnd));
+        $start = $this->createDate($request->promotionRage, 0, 19); 
+        $end = $this->createDate($request->promotionRage, 21, 30);
 
         Promotion::find($id)->update([
             'name' => $request->name,
@@ -170,6 +168,7 @@ class PromotionController extends Controller
      */
     public function destroy($id)
     {
+        PromotionDetail::where('promotion_id', $id)->delete();
         Promotion::destroy($id);
 
         return redirect()->back()->with('msg', Lang::get('custom.msg.promotion_deleted'));
@@ -180,5 +179,44 @@ class PromotionController extends Controller
         PromotionDetail::destroy($request->promotionDetailId);
 
         return response()->json(['msg' => Lang::get('custom.msg.promotion_item_rejected')]);
+    }
+
+    public function getProdNotProm()
+    {
+        $prodWithProm = PromotionDetail::all();
+        $arrProdWithProm = [];
+        foreach ($prodWithProm as $item) {
+            array_push($arrProdWithProm, $item->product_id);
+        }
+        $productAll = Product::all();
+        $products = [];
+        foreach ($productAll as $product) {
+            if (!in_array($product->id, $arrProdWithProm)) {
+                $products[$product->id] = $product->name;
+            }
+        }
+
+        return $products;
+    }
+
+    public function getProdEdit($id)
+    {
+        $products = $this->getProdNotProm();
+        $promDetailProd = PromotionDetail::promDetailProd($id)->get();
+        for ($i = 0; $i < count($promDetailProd); $i++) { 
+            $productId = $promDetailProd[$i]['product']['id'];
+            $productName = $promDetailProd[$i]['product']['name'];
+            $products[$productId] = $productName;
+        }
+
+        return $products;
+    }
+
+    public function createDate($string, $start, $end)
+    {
+        $sub = substr((string) $string, $start, $end);
+        $date = date('Y-m-d H:i:s', strtotime($sub));
+
+        return $date;
     }
 }

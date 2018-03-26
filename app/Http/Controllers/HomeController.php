@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\App;
 use Carbon\Carbon;
 use App\Models\Order;
 use App\Models\User;
+use App\Models\Product;
 use App\Models\OrderDetail;
 
 class HomeController extends Controller

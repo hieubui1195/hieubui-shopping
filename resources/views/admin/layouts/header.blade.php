@@ -5,7 +5,7 @@
             'admin.home', 
             '<span class="logo-mini"><b>' . Lang::get("custom.common.logo") . 
             '</b></span><span class="logo-lg"><b>' . Lang::get('custom.common.title') . '</b></span>', 
-            null, 
+            [], 
             [
                 'class' => 'logo',
             ]
@@ -79,6 +79,7 @@
                                     Lang::get('custom.common.logout_button'), 
                                     null, 
                                     [
+                                        'style' => 'color: #666666;',
                                         'onclick' => 'event.preventDefault();document.getElementById("logout-form").submit();'
                                     ]
                                 ) !!}

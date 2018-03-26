@@ -15,6 +15,12 @@
                 'style' => 'width: 200px',
             ]
         ) !!}
+        <span style="margin-left: 20px;">
+            @lang('custom.common.search_result', [
+                'result' => $products->total(),
+                'key' => $search,
+            ])
+        </span>
     @endsection
     
     @section('paginate', $products->links())

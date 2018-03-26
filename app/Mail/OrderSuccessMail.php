@@ -9,7 +9,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
-use MyFunctions;
 use Lang;
 
 class OrderSuccessMail extends Mailable
@@ -25,10 +24,8 @@ class OrderSuccessMail extends Mailable
      */
     public function __construct($id)
     {
-        $order = Order::find($id); 
-        $orderDetails = OrderDetail::where('order_id', $id)
-                                    ->with('product')
-                                    ->get();
+        $order = Order::findOrFail($id);
+        $orderDetails = OrderDetail::detailWithProduct($id);
         $promotions = [];
         foreach ($orderDetails as $orderDetail) {
             $promotion = Product::find($orderDetail->product_id)->promotionDetail;
@@ -38,8 +35,9 @@ class OrderSuccessMail extends Mailable
                 array_push($promotions, config('custom.defaultZero'));
             }
         }
+
         $totalOrder = 0;
-        for ($i=0; $i < count($orderDetails); $i++) { 
+        for ($i = 0; $i < count($orderDetails); $i++) { 
             $totalOrder += ceil(($orderDetails[$i]['product']['price'] * $orderDetails[$i]->amount) * (100 - $promotions[$i]) / 100);
         }
 
@@ -56,8 +54,6 @@ class OrderSuccessMail extends Mailable
      */
     public function build()
     {
-        MyFunctions::changeLanguage();
-
         return $this->subject(Lang::get('custom.mail.subject_success'))
                     ->markdown('admin.orders.success-mail')
                     ->with([

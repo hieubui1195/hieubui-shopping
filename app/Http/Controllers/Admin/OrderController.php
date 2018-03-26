@@ -6,12 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
-use App\Jobs\OrderRejectJob;
-use App\Jobs\OrderSuccessJob;
-use App\Jobs\OrderRejectItemJob;
+use App\Mail\OrderSuccessMail;
+use App\Mail\OrderRejectMail;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
+use App\Models\User;
 use DateTime;
 use Lang;
 
@@ -65,11 +65,8 @@ class OrderController extends Controller
      */
     public function destroy($id)
     {
-        // Queueing
-        OrderRejectJob::dispatch($id)
-                        ->delay(now()->addSeconds(config('custom.defaultOne')));
-
         $order = Order::find($id);
+        Mail::to($order->email)->send(new OrderRejectMail($id));
         $orderDetails = OrderDetail::orderDetail($id)->delete();
         Order::find($id)->update([
             'state' => config('custom.defaultTwo')
@@ -89,28 +86,15 @@ class OrderController extends Controller
         // Update products table
         $orderDetails = OrderDetail::orderDetail($request->orderId)->get();
         foreach ($orderDetails as $orderDetail) {
-            $amountCurrent = $product->value('amount');
+            $amountCurrent = Product::find($orderDetail->product_id)->value('amount');
             $amountNew = $amountCurrent - $orderDetail->amount;
             Product::find($orderDetail->product_id)->update([
                 'amount' => $amountNew,
             ]);
         }
-
-        // Queueing
-        OrderSuccessJob::dispatch($request->orderId)
-                        ->delay(now()->addSeconds(config('custom.defaultOne')));
+        $orderEmail = Order::orderFind($request->orderId)->value('email');
+        Mail::to($orderEmail)->send(new OrderSuccessMail($request->orderId));
                     
         return response()->json(['msg' => Lang::get('custom.msg.order_approved')]);
-    }
-
-    public function rejectItem(Request $request)
-    {
-        // Queueing
-        OrderRejectItemJob::dispatch($request->orderDetailId)
-                            ->delay(now()->addSeconds(config('custom.defaultOne')));
-
-        OrderDetail::destroy($request->orderDetailId);
-
-        return response()->json(['msg' => Lang::get('custom.msg.order_item_rejected')]);
     }
 }

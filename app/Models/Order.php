@@ -54,4 +54,9 @@ class Order extends Model
         return $query->where('email', $email)
                     ->where('state', config('custom.defaultZero'));
     }
+
+    public function scopeWithOrderDetail($query, $email)
+    {
+        return $query->with('orderDetails')->where('email', $email);
+    }
 }

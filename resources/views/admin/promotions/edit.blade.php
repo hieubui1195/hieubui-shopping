@@ -38,7 +38,7 @@
                     @include('admin.partials.success')
                         
                     <h3 style="text-align: center;">
-                        @lang('custom.common.add_promotion')
+                        @lang('custom.common.edit_promotion')
                     </h3>
                 </div>
                 <div class="box-body">
@@ -181,7 +181,7 @@
                             {!! Form::input(
                                 'number',
                                 'percent',
-                                old('percent') ? old('percent') : $percent[0],
+                                old('percent') ? old('percent') : $percent,
                                 [
                                     'class' => 'form-control',
                                     'placeholder' => Lang::get('custom.common.percent'),

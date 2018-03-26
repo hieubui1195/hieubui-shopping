@@ -105,25 +105,31 @@
                                         @endif
                                     </td>
                                     <td>
-                                        @switch($order->state)
-                                            @case(0)
-                                                <p class="label bg-yellow">
-                                                    @lang('custom.common.pending')
-                                                </p>
-                                                @break
-                                        
-                                            @case(1)
-                                                <p class="label bg-green">
-                                                    @lang('custom.common.completed')
-                                                </p>
-                                                @break
+                                        @if ($order->deleted_at != null)
+                                            <p class="label bg-red">
+                                                @lang('custom.common.deleted')
+                                            </p>
+                                        @else
+                                            @switch($order->state)
+                                                @case(0)
+                                                    <p class="label bg-yellow">
+                                                        @lang('custom.common.pending')
+                                                    </p>
+                                                    @break
+                                            
+                                                @case(1)
+                                                    <p class="label bg-green">
+                                                        @lang('custom.common.completed')
+                                                    </p>
+                                                    @break
 
-                                            @case(2)
-                                                <p class="label bg-red">
-                                                    @lang('custom.common.reject')
-                                                </p>
-                                                @break
-                                        @endswitch
+                                                @case(2)
+                                                    <p class="label bg-red">
+                                                        @lang('custom.common.reject')
+                                                    </p>
+                                                    @break
+                                            @endswitch
+                                        @endif
                                     </td>
                                     <td>
                                         {!! html_entity_decode(
@@ -134,7 +140,7 @@
                                                     'id' => $order->id
                                                 ],
                                                 [
-                                                    'class' => 'btn btn-success info ' . ($order->state == 2 ? 'disabled' : ''),
+                                                    'class' => 'btn btn-success info ' . ($order->deleted_at != null || $order->state == 2 ? 'disabled' : ''),
                                                     'data-id' => $order->id,
                                                     'title' => Lang::get('custom.common.view_detail'),
                                                 ]
@@ -146,7 +152,7 @@
                                                 null,
                                                 '<i class="fa fa-check"></i>',
                                                 [
-                                                    'class' => 'btn btn-success approve-order ' . ($order->state == (1 || 2) ? 'disabled' : ''),
+                                                    'class' => 'btn btn-success approve-order ' . ($order->deleted_at != null || $order->state == (1 || 2) ? 'disabled' : ''),
                                                     'data-id' => $order->id,
                                                     'title' => Lang::get('custom.common.approve'),
                                                 ]
@@ -158,7 +164,7 @@
                                                 null,
                                                 '<i class="fa fa-times"></i>',
                                                 [
-                                                    'class' => 'btn btn-danger reject '  . ($order->state ==(1 || 2) ? 'disabled' : ''),
+                                                    'class' => 'btn btn-danger reject '  . ($order->deleted_at != null || $order->state == (1 || 2) ? 'disabled' : ''),
                                                     'data-id' => $order->id,
                                                     'title' => Lang::get('custom.common.reject'),
                                                 ]

@@ -1,0 +1,12 @@
+[2018-03-29 15:55:32] local.ERROR: Class 'Barryvdh\Debugbar\ServiceProvider' not found {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): Class 'Barryvdh\\Debugbar\\ServiceProvider' not found at /opt/lampp/htdocs/shopping_mall_08/vendor/laravel/framework/src/Illuminate/Foundation/ProviderRepository.php:208)
+[stacktrace]
+#0 /opt/lampp/htdocs/shopping_mall_08/vendor/laravel/framework/src/Illuminate/Foundation/ProviderRepository.php(144): Illuminate\\Foundation\\ProviderRepository->createProvider('Barryvdh\\\\Debugb...')
+#1 /opt/lampp/htdocs/shopping_mall_08/vendor/laravel/framework/src/Illuminate/Foundation/ProviderRepository.php(61): Illuminate\\Foundation\\ProviderRepository->compileManifest(Array)
+#2 /opt/lampp/htdocs/shopping_mall_08/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(561): Illuminate\\Foundation\\ProviderRepository->load(Array)
+#3 /opt/lampp/htdocs/shopping_mall_08/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/RegisterProviders.php(17): Illuminate\\Foundation\\Application->registerConfiguredProviders()
+#4 /opt/lampp/htdocs/shopping_mall_08/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(213): Illuminate\\Foundation\\Bootstrap\\RegisterProviders->bootstrap(Object(Illuminate\\Foundation\\Application))
+#5 /opt/lampp/htdocs/shopping_mall_08/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(296): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#6 /opt/lampp/htdocs/shopping_mall_08/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(119): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#7 /opt/lampp/htdocs/shopping_mall_08/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 {main}
+"} 

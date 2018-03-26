@@ -97,6 +97,8 @@
                                                 'id' => 'qty',
                                             ]
                                         ) !!}
+
+                                        {!! Form::hidden('qtyAvailable', $product->amount) !!}
                                     </div>
                                     {!! html_entity_decode(
                                         Form::button(
@@ -291,5 +293,4 @@
 
 @section('script')
     {!! Html::script('js/user/review.js') !!}
-    {!! Html::script('js/user/cart.js') !!}
 @endsection

@@ -64,16 +64,29 @@
                 </div>
                 <h2 class="product-name">{{ Html::linkRoute('product', $lp->name, $lp->id)}}</h2>
                 <div class="product-btns">
-                    {!! html_entity_decode(
-                        Form::button(
-                            '<i class="fa fa-shopping-cart"></i>' . Lang::get('custom.common.addcart'),
-                            [
-                                'class' => 'primary-btn add-to-cart',
-                                'data-id' => $lp->id,
-                                'data-price' => ($km) ? ceil($lp->price * (100 - $km->percent) / 100) : $lp->price,
-                            ]
-                        )
-                    ) !!}
+                    @if ($lp->amount > 0)
+                        {!! html_entity_decode(
+                            Form::button(
+                                '<i class="fa fa-shopping-cart"></i>' . Lang::get('custom.common.addcart'),
+                                [
+                                    'class' => 'primary-btn btn-group add-to-cart',
+                                    'data-id' => $lp->id,
+                                    'data-price' => ($km) ? ceil($lp->price * (100 - $km->percent) / 100) : $lp->price,
+                                    'style' => 'width: 100%;',
+                                ]
+                            )
+                        ) !!}
+                    @else
+                        {!! html_entity_decode(
+                            Form::button(
+                                Lang::get('custom.common.sold_out'),
+                                [
+                                    'class' => 'primary-btn',
+                                    'style' => 'background: red; width: 100%;',
+                                ]
+                            )
+                        ) !!}
+                    @endif
                 </div>
             </div>
         </div>

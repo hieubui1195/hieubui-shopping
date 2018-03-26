@@ -15,7 +15,8 @@
                     <div class="banner-caption text-center">
                         <h1>{!! Lang::get('custom.header.welcome') !!}</h1>
                         <h3 class="white-color font-weak">{!! Lang::get('custom.common.discount') !!}</h3>
-                        {!! Form::button(
+                        {!! Html::link(
+                            '#shop-now',
                             Lang::get('custom.common.shopnow'),
                             [
                                 'class' => 'primary-btn',
@@ -36,7 +37,7 @@
         <!-- container -->
         <div class="container">
             <!-- row -->
-            <div class="row">
+            <div class="row" id="shop-now">
                 <!-- section title -->
                 <div class="col-md-12">
                     <div class="section-title">

@@ -1,4 +1,29 @@
 $(function () {
+
+     // Delete promotion
+    $('.delete-promotion').click(function() {
+        event.preventDefault();
+        var strConfirm = $('input[name="confirm"]').val();
+        swal({
+            title: strConfirm,
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.value) {
+                var promotionId = $(this).attr('data-id');
+                $("#delete-form-" + promotionId).submit();
+                swal(
+                    'Deleted!',
+                    'The item has been deleted.',
+                    'success'
+                )
+            }
+        })
+    })
+    
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

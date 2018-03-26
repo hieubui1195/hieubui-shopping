@@ -1,16 +1,5 @@
 $(function () {
 
-     // Delete promotion
-    $('.delete-promotion').click(function() {
-        event.preventDefault();
-        var strConfirm = $('input[name="confirm"]').val();
-        if (confirm(strConfirm)) {
-            var promotionId = $(this).attr('data-id');
-            $("#delete-form-" + promotionId).submit();
-        }
-    })
-
-
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

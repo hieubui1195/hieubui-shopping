@@ -8,7 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\Mail;
-use App\Models\OrderDetail;
+use App\Models\Order;
 use App\Mail\OrderSuccessMail;
 
 class OrderSuccessJob implements ShouldQueue
@@ -33,8 +33,7 @@ class OrderSuccessJob implements ShouldQueue
      */
     public function handle()
     {
-        $order = OrderDetail::where('id', $this->orderId)->with('order')->get();
-        $email = $order[0]['order']['email'];
+        $email = Order::find($this->orderId)->email;
         Mail::to($email)->send(new OrderSuccessMail($this->orderId));
     }
 }

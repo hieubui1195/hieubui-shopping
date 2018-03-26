@@ -74,7 +74,7 @@ $(document).ready(function() {
         getReview(id);
     })
 
-    $('.col-review').on('submit', '#review-form', function (event) {
+    $('.col-review').on('submit', '.form-edit', function (event) {
         event.preventDefault();
         var id = $('#review-id').val();
         var productId = $('#product-id').val();
@@ -102,12 +102,14 @@ $(document).ready(function() {
                     dataType: 'TEXT',
                     data: { id: id, productId: productId },
                     success: function (data) {
-                        $('.product-reviews').html(data);
-                        checkReview(productId, userId)
+                        // $('.product-reviews').html(data);
+                        $('.product-reviews').load(location.href + ' .product-reviews');
                         swal({
                             text: 'Review has been deleted.',
                             type: 'success'
                         })
+                        clearForm();
+                        checkReview(productId, userId);
                     },
                     error: function (request, status, error) {
                         swal({
@@ -150,7 +152,7 @@ function checkReview(productId, userId) {
         data: {productId: $('#product-id').val(), userId: $('#user-id').val()},
         success: function(data) {
             if (data.status == false) {
-                $('#send-review').attr('style', 'display: block;');
+                $('#send-review').attr('style', 'display: block;').addClass('edit-review');
                 $('#cancel-review').attr('style', 'display: block;');
             } else {
                 $('#send-review').attr('style', 'display: none;');
@@ -168,6 +170,7 @@ function sendReview(productId, userId, title, content, rate) {
         data: { productId: productId, userId: userId, title: title, content: content, rate: rate },
         success: function(data) {
             $('.product-reviews').html(data);
+            $('.product-reviews').load(location.href + ' .product-reviews');
             clearForm();
             checkReview(productId, userId)
         }
@@ -181,6 +184,7 @@ function getReview(id) {
         datatype: 'JSON',
         data: {id: id},
         success: function(data) {
+            $('#review-form').addClass('form-edit');
             $('#product-id').val(data.productId);
             $('#title').val(data.title);
             $('#content').val(data.content);
@@ -201,12 +205,14 @@ function setStar(value) {
 function editReview(id, productId, title, content, rate) {
     $.ajax({
         url: '/edit-review',
-        type: 'PUT',
+        type: 'POST',
         datatype: 'JSON',
         data: {id: id, productId: productId, title: title, content: content, rate: rate},
         success: function(data) {
             clearForm();
             $('.product-reviews').html(data);
+            $('#send-review').attr('style', 'display: none;');
+            $('#cancel-review').attr('style', 'display: none;');
         }
     })
 }

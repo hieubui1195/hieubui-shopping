@@ -39,6 +39,7 @@ class UserRequest extends FormRequest
             case config('custom.form_type.edit'):
                 $rules = [
                     'name' => 'required',
+                    'phone' => 'numeric',
                     'password'=>'nullable|string|min:6|confirmed',
                     'avatar' => 'image|mimes:jpg,jpeg,bmp,png|max:2000',
                 ];
@@ -55,6 +56,8 @@ class UserRequest extends FormRequest
             'email.required' => Lang::get('validation.required'),
             'email.unique' => Lang::get('validation.unique'),
             'name.required' => Lang::get('validation.required'),
+            'phone.numeric' => Lang::get('validation.numeric'),
+            
             'password' => Lang::get('validation.string'),
             'password' => Lang::get('validation.min.string', ['min' => 6]),
             'password' => Lang::get('validation.confirmed'),

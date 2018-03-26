@@ -25,11 +25,6 @@ $(document).ready(function() {
         }).then((result) => {
             if (result.value) {
                 var categoryId = $(this).attr('data-id');
-                swal(
-                    'Deleted!',
-                    'The item has been deleted.',
-                    'success'
-                )
                 $("#delete-form-" + categoryId).submit();
             }
         })

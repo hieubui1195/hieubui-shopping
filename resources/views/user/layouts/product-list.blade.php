@@ -9,7 +9,6 @@
             <div class="row">
                 <!-- MAIN -->
                 <div id="main" class="col-md-12">
-                    <!-- store top filter -->
                     <div class="store-filter clearfix">
                         <div class="pull-left">
                             <div class="sort-filter">
@@ -32,7 +31,7 @@
                             @section('product-list')
                                 @show
                         </div>
-                        <!-- /row -->
+                    <!-- /row -->
                     </div>
                 </div>
                 <!-- /MAIN -->

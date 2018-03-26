@@ -146,7 +146,7 @@
                                         {!! html_entity_decode(
                                             Html::link(
                                                 null,
-                                                '<i class="fa fa-times"></i>',
+                                                '<i class="fa fa-trash"></i>',
                                                 [
                                                     'class' => 'btn btn-danger delete-user '  . ($user->deleted_at != null ? 'disabled' : ''),
                                                     'data-id' => $user->id,

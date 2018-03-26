@@ -22,7 +22,7 @@ class RegisterController extends Controller
     */
 
     use RegistersUsers;
-
+    protected $redirectTo = '/';
     /**
      * Where to redirect users after registration.
      *
@@ -78,8 +78,8 @@ class RegisterController extends Controller
         return $user;
     }
 
-    protected function redirectTo()
-    {
-        return redirect()->back();
-    }
+    // protected function redirectTo()
+    // {
+    //     return redirect()->route('home');
+    // }
 }

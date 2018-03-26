@@ -6,6 +6,7 @@
         <title>@lang('custom.common.title')</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
         <!-- Bootstrap -->
         {!! Html::style('assets/bootstrap-3.3.7-dist/css/bootstrap.min.css') !!}
         <!-- Ionicons -->
@@ -68,23 +69,19 @@
                         ) !!}
                         
                     </div>
-
-                    <div class="col-xs-12">
-                        <div class="checkbox icheck">
-                            {!! Form::checkbox('remember', old('remember') ? true : false ) !!}
-                            {!! Form::label(Lang::get('custom.admin_login.remember_me')) !!}
+                    <div class="row">
+                        <div class="col-xs-8">
+                            <div class="checkbox icheck">
+                                {!! Form::checkbox('remember', old('remember') ? true : false ) !!}
+                                {!! Form::label(Lang::get('custom.admin_login.remember_me')) !!}
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="col-xs-12">
-                        {!! Form::submit(Lang::get('custom.admin_login.sign_in_button'), ['class' => 'btn btn-primary btn-block btn-flat']) !!}
+                        <div class="col-xs-4">
+                            {!! Form::submit(Lang::get('custom.admin_login.sign_in_button'), ['class' => 'btn btn-primary btn-block btn-flat']) !!}
+                        </div>
                     </div>
                     
                 {!! Form::close() !!}
-                
-                {!! Html::link(null, Lang::get('custom.admin_login.forgot_password')) !!}
-
-                <br />
                 
                 {!! html_entity_decode(
                     Html::linkRoute(
